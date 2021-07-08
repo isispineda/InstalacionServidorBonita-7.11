@@ -33,7 +33,7 @@ SELECT
 	f.FECHA_INICIO_SALIDA,
 	f.FECHA_MODIFICACION,
 	f.FECHA_NAC_MOTORISTA,
-	f.FECHA_SALIDA_LISTA,
+	f.FECHA_SALIDA_LISTA_DGA,
 	f.FECHA_VENC_DOC_MOTORISTA,
 	f.ID_ORIGEN_LECTURA,
 	f.INICIO_SALIDA,
@@ -46,19 +46,19 @@ SELECT
 	f.persistenceVersion,
 	f.PESO,
 	f.PLACA,
-    case when f.[SALIDA_LISTA] = 'S' then 'SI'
-	      when f.[SALIDA_LISTA] = 'N' then 'NO'
+    case when f.[SALIDA_LISTA_DGA] = 'S' then 'SI'
+	      when f.[SALIDA_LISTA_DGA] = 'N' then 'NO'
     end as SALIDA_LISTA,
 	f.T_MAXIMO,
 	f.T_MINIMO,
 	f.TELEFONO_AVISO,
-	f.TIPO_DOCUMENTO,
+	f.TIPO_DOCUMENTO_PID,
 	f.TIPO_FINALIZACION,
 	f.TIPO_FLUJO,
 	f.TRASERA,
 	f.USUARIO_ADICION,
 	f.USUARIO_MODIFICACION,
-	f.VACIO,
+	f.VACIO_SIN_DOCUMENTO,
 	f.ID_FRONTERA_PID,
 	f.ID_PC_INGRESO_PID,
 	f.ID_PC_SALIDA_PID,
@@ -79,8 +79,8 @@ SELECT
 	when f.ID_PROCESO_PID = 4 and (select NOMBRE_PC from PUNTOCONTROL p where f.ID_PC_INGRESO_PID = p.persistenceId ) = 'E001' then 'TRANSITOS HACIA GT'
 	when (select NOMBRE_PC from PUNTOCONTROL p where f.ID_PC_INGRESO_PID = p.persistenceId ) = 'E001' and f.ESTADO_FLUJO = 'F' AND f.TIPO_FINALIZACION = 'R'then 'RETORNOS HACIA ES'
 	when (select NOMBRE_PC from PUNTOCONTROL p where f.ID_PC_INGRESO_PID = p.persistenceId ) = 'E002' and f.ESTADO_FLUJO = 'F' AND f.TIPO_FINALIZACION = 'R' then 'RETORNOS HACIA GT'
-	when (select NOMBRE_PC from PUNTOCONTROL p where f.ID_PC_INGRESO_PID = p.persistenceId ) = 'E002' and  f.VACIO = 1 AND f.ESTADO_FLUJO = 'F' AND f.TIPO_FINALIZACION = 'E' then 'VACIOS HACIA ES'
-	when (select NOMBRE_PC from PUNTOCONTROL p where f.ID_PC_INGRESO_PID = p.persistenceId ) = 'E001' and  f.VACIO = 1 AND f.ESTADO_FLUJO = 'F' AND f.TIPO_FINALIZACION = 'E' then 'VACIOS HACIA GT'
+	when (select NOMBRE_PC from PUNTOCONTROL p where f.ID_PC_INGRESO_PID = p.persistenceId ) = 'E002' and  f.VACIO_SIN_DOCUMENTO = 1 AND f.ESTADO_FLUJO = 'F' AND f.TIPO_FINALIZACION = 'E' then 'VACIOS HACIA ES'
+	when (select NOMBRE_PC from PUNTOCONTROL p where f.ID_PC_INGRESO_PID = p.persistenceId ) = 'E001' and  f.VACIO_SIN_DOCUMENTO= 1 AND f.ESTADO_FLUJO = 'F' AND f.TIPO_FINALIZACION = 'E' then 'VACIOS HACIA GT'
 	else 'NO DETERMINADO'
 	END AS PROCESO,
     
